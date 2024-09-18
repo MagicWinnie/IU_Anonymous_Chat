@@ -43,7 +43,7 @@ def main(page: ft.Page):
         open=True,
         modal=True,
         title=ft.Text(texts.WELCOME_DIALOG_TITLE),
-        content=ft.Column([ip_address_server], width=300, height=70, tight=True),
+        content=ft.Column([ip_address_server], width=300, height=40, tight=True),
         actions=[ft.ElevatedButton(text=texts.WELCOME_DIALOG_JOIN_BUTTON, on_click=join_chat_click)],
         actions_alignment=ft.MainAxisAlignment.END,
     )
