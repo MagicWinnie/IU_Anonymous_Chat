@@ -1,9 +1,9 @@
 import flet as ft
 
-import texts
-from message_row import ChatMessage
-from schemas import Message
-from utils import is_valid_url
+from modules import texts
+from modules.message_row import ChatMessage
+from modules.schemas import Message
+from modules.utils import is_valid_url
 
 
 def main(page: ft.Page):

@@ -2,7 +2,7 @@ from datetime import datetime
 
 import flet as ft
 
-from schemas import Message
+from .schemas import Message
 
 
 class ChatMessage(ft.Row):
