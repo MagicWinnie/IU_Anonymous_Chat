@@ -18,7 +18,6 @@ def main(page: ft.Page):
             ip_address_server.update()
         else:
             page.close(dig)
-            on_message(Message(text=f"Joined the chat at {ip_address_server.value}"))
 
     def send_message_click(e):
         if new_message.value != "":
