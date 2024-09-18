@@ -21,9 +21,7 @@ def main(page: ft.Page):
 
     def send_message_click(e):
         if new_message.value != "":
-            page.pubsub.send_all(
-                Message(text=new_message.value)
-            )
+            page.pubsub.send_all(Message(text=new_message.value))
             new_message.value = ""
             new_message.focus()
             page.update()
@@ -51,11 +49,7 @@ def main(page: ft.Page):
     page.overlay.append(dig)
 
     # Chat messages
-    chat = ft.ListView(
-        expand=True,
-        spacing=10,
-        auto_scroll=True,
-    )
+    chat = ft.ListView(expand=True, spacing=10, auto_scroll=True)
 
     # A new message entry form
     new_message = ft.TextField(
@@ -81,11 +75,7 @@ def main(page: ft.Page):
         ft.Row(
             [
                 new_message,
-                ft.IconButton(
-                    icon=ft.icons.SEND_ROUNDED,
-                    tooltip="Send message",
-                    on_click=send_message_click,
-                ),
+                ft.IconButton(icon=ft.icons.SEND_ROUNDED, tooltip="Send message", on_click=send_message_click),
             ]
         ),
     )
