@@ -9,6 +9,8 @@ Team 24:
 - Vladislav Bolshakov (v.bolshakov@innopolis.university)
 
 ## Project Structure
+- Client lies in folder `client`
+- Server lies in folder `server`
 ```
 .
 ├── README.md
