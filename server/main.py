@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-@app.get("/message/count")
+@app.get("/messages/count")
 async def count_message():
     return await MessageRepository.count_messages()
 
