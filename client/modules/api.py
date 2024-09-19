@@ -1,6 +1,7 @@
 from urllib.parse import urljoin
 
 import requests
+
 from modules.schemas import Message
 
 
@@ -28,22 +29,23 @@ class API:
             response = self.session.post(url=url, params=params)
             response.raise_for_status()
             return True
-        except requests.exceptions.RequestException as e:
+        except requests.exceptions.RequestException:
             return False
 
-    def messages(self, offset_message_id: int = -1) -> list[Message]:
+    def messages(self, offset_message_id: int = -1) -> list[Message] | None:
         url = urljoin(self.base_url, "messages")
         params = {"offset_message_id": offset_message_id}
         try:
             response = self.session.get(url=url, params=params)
             response.raise_for_status()
             return [Message(**message) for message in response.json()]
-        except requests.exceptions.RequestException as e:
-            return []
+        except requests.exceptions.RequestException:
+            return None
 
 
 def main():
-    api = API("http://10.91.49.21:8000/")
+    api = API()
+    api.set_base_url("http://10.91.49.21:8000/")
     print(api.messages_count())
     print(api.message_send("Sent from client test"))
     print(api.messages())

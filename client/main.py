@@ -2,8 +2,7 @@ import flet as ft
 
 from modules import texts
 from modules.api import API
-from modules.message_row import ChatMessage
-from modules.schemas import Message
+from modules.messages_list import MessagesList
 from modules.utils import is_valid_url
 
 
@@ -30,16 +29,11 @@ def main(page: ft.Page):
 
     def send_message_click(e):
         if new_message.value:
-            api.message_send(new_message.value)
+            if not api.message_send(new_message.value):
+                print("A")
             new_message.value = ""
             new_message.focus()
             page.update()
-
-    def on_message(message: Message):
-        chat.controls.append(ChatMessage(message))
-        page.update()
-
-    page.pubsub.subscribe(on_message)
 
     ip_address_server = ft.TextField(
         label=texts.SERVER_ADDRESS_INPUT_LABEL,
@@ -57,9 +51,6 @@ def main(page: ft.Page):
     )
     page.overlay.append(dig)
 
-    # Chat messages
-    chat = ft.ListView(expand=True, spacing=10, auto_scroll=True)
-
     # A new message entry form
     new_message = ft.TextField(
         hint_text=texts.NEW_MESSAGE_INPUT_HINT,
@@ -74,12 +65,12 @@ def main(page: ft.Page):
 
     # Add everything to the page
     page.add(
-        ft.Container(
-            content=chat,
+        MessagesList(
+            api,
             border=ft.border.all(1, ft.colors.OUTLINE),
             border_radius=5,
             padding=10,
-            expand=True,
+            expand=True
         ),
         ft.Row(
             [
