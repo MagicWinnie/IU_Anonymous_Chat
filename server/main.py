@@ -41,7 +41,7 @@ async def get_messages(offset_message_id: int = -1):
         if new_msgs:
             return new_msgs
         
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
 
     return []
 
