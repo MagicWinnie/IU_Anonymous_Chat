@@ -1,7 +1,7 @@
 import asyncio
 import uvicorn
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from datetime import datetime
 
@@ -43,7 +43,7 @@ async def get_messages(offset_message_id: int = -1):
         
         await asyncio.sleep(1)
 
-    return {"message": "No new messages"}
+    return []
 
 
 if __name__ == "__main__":
