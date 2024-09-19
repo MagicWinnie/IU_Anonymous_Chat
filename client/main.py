@@ -12,7 +12,7 @@ def main(page: ft.Page):
     page.title = texts.PAGE_TITLE
 
     api = API()
-    
+
     send_message_queue = MessageQueue(api)
     send_message_queue.start()
 
