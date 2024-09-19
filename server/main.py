@@ -1,13 +1,13 @@
 import asyncio
 import uvicorn
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 
 from datetime import datetime
 
 from contextlib import asynccontextmanager
 
-from repository import *
+from repository import MessageRepository
 from settings import initialize_database
 from models import Message
 
