@@ -7,6 +7,7 @@ async def send_message(session, url, message):
         end_time = time.time()
         return end_time - start_time, response.status, response.reason
 
+
 async def receive_messages(session, url, offset_message_id):
     start_time = time.time()
     async with session.get(url, params={"offset_message_id": offset_message_id}) as response:

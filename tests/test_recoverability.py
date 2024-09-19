@@ -1,11 +1,10 @@
-import subprocess
 import asyncio
+import subprocess
 import uuid
 
 import aiohttp
-import time
-from tests.helper import *
 
+from tests.helper import *
 
 
 def pause_docker_container(container_name):
@@ -30,18 +29,19 @@ def unpause_docker_container(container_name):
 
 async def test_recoverability():
     pause_docker_container('mongodb')
-
+    print()
 
     async with aiohttp.ClientSession() as session:
         send_url = "http://127.0.0.1:8000/message/send"
 
         # Attempt to send a message while the database is offline
         print("Sending message...")
+
         # Generate UUID for the message
         message_text = str(uuid.uuid4())
         status = await send_message(session, send_url, message_text)
         print(f"Message send status while DB is offline: {status[1:]}")
-
+        print()
         # Start the MongoDB container
         unpause_docker_container('mongodb')
 
@@ -54,8 +54,8 @@ async def test_recoverability():
             for message in messages:
                 if (message['text'] == message_text):
                     end_time = time.time()
-                    print("Test passed")
-                    print(f"Time taken for message to be sent: {end_time - start_time:.4f} seconds")
+                    print("Test passed successfully")
+                    print(f"Time taken for message to be received: {end_time - start_time:.4f} seconds")
                     exit(0)
 
         print("Test failed")
