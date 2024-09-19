@@ -1,6 +1,7 @@
 from models import Message
 
 from datetime import datetime
+from datetime import timezone
 
 class MessageRepository:
     @staticmethod
@@ -12,7 +13,7 @@ class MessageRepository:
         else:
             new_message_id = last_message.message_id + 1
 
-        await Message(message_id=new_message_id, text=text, date_time=datetime.utcnow()).insert()
+        await Message(message_id=new_message_id, text=text, date_time=datetime.now(timezone.utc)).insert()
 
     @staticmethod
     async def count_messages():
