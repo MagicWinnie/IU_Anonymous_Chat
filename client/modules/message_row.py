@@ -13,7 +13,7 @@ class ChatMessage(ft.Row):
             ft.CircleAvatar(content=ft.Icon(ft.icons.PERSON_ROUNDED)),
             ft.Column(
                 [
-                    ft.Text(self.get_formatted_time(message.time), italic=True, size=time_text_size),
+                    ft.Text(self.get_formatted_time(message.date_time), italic=True, size=time_text_size),
                     ft.Text(message.text, selectable=True, size=msg_text_size),
                 ],
                 tight=True,
