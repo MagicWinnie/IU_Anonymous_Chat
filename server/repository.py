@@ -22,3 +22,7 @@ class MessageRepository:
     @staticmethod
     async def get_new_messages(offset_message_id: int = -1):
         return await Message.find(Message.message_id > offset_message_id).to_list()
+
+    @staticmethod
+    async def clear_messages():
+        await Message.delete_all()

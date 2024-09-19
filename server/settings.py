@@ -12,3 +12,11 @@ async def initialize_database():
             Message
         ]
     )
+
+async def is_mongodb_online():
+    try:
+        client = AsyncIOMotorClient("mongodb://localhost:27017")
+        await client.admin.command("ping")
+        return True
+    except Exception:
+        return False
