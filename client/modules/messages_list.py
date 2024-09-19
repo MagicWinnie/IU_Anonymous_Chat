@@ -24,6 +24,8 @@ class MessagesList(ft.Container):
             if not self.api.base_url:
                 continue
             messages = self.api.messages(self.last_message_id)
+            if messages is None:
+                continue  # TODO: fix
             for message in messages:
                 self.chat.controls.append(ChatMessage(message))
                 self.last_message_id = message.message_id

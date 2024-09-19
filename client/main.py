@@ -2,6 +2,7 @@ import flet as ft
 
 from modules import texts
 from modules.api import API
+from modules.message_queue import MessageQueue
 from modules.messages_list import MessagesList
 from modules.utils import is_valid_url
 
@@ -11,6 +12,9 @@ def main(page: ft.Page):
     page.title = texts.PAGE_TITLE
 
     api = API()
+    
+    send_message_queue = MessageQueue(api)
+    send_message_queue.start()
 
     def join_chat_click(e):
         if not ip_address_server.value:
@@ -29,8 +33,7 @@ def main(page: ft.Page):
 
     def send_message_click(e):
         if new_message.value:
-            if not api.message_send(new_message.value):
-                print("A")
+            send_message_queue.queue.put(new_message.value)
             new_message.value = ""
             new_message.focus()
             page.update()
