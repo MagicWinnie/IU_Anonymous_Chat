@@ -1,8 +1,8 @@
 import asyncio
-import time
 
 import aiohttp
 import numpy as np
+from tqdm.asyncio import tqdm
 
 from tests.helper import *
 
@@ -16,13 +16,16 @@ async def send_and_receive_messages(send_url, receive_url, num_users):
             send_tasks.append(send_message(session, send_url, str(user_id)))
 
         send_start_time = time.time()
-        send_responses = await asyncio.gather(*send_tasks)
+
+        # Add a loading bar here
+        print(f"Sending {num_users} messages simultaneously...")
+        send_responses = await tqdm.gather(*send_tasks, desc="Sending messages", unit="message")
 
         send_times = [resp[0] for resp in send_responses if resp[1] == 200]
         send_time = time.time() - send_start_time
 
         if all(status[1] == 200 for status in send_responses):
-            print(f"All messages sent successfully in {send_time:.4f} seconds")
+            print(f"All {num_users} messages sent successfully in \033[1m{send_time:.4f}\033[0m seconds")
         else:
             print("Some messages failed to send")
 
@@ -35,8 +38,8 @@ async def send_and_receive_messages(send_url, receive_url, num_users):
         receive_time = time.time() - receive_start_time
 
         print()
-        print(f"Received {len(received_messages)} messages in {receive_time:.4f} seconds")
-        print(f"Total time for sending and receiving messages: {send_time + receive_time:.4f} seconds")
+        print(f"Received {len(received_messages)} messages in \033[1m{receive_time:.4f}\033[0m seconds")
+        print(f"Total time for sending and receiving messages: \033[1m{send_time + receive_time:.4f}\033[0m seconds")
 
         send_mean = np.mean(send_times)
         send_std = np.std(send_times)
@@ -44,8 +47,9 @@ async def send_and_receive_messages(send_url, receive_url, num_users):
         send_max = np.max(send_times)
 
         print()
-        print(f"Send times - Mean: {send_mean:.4f}, Std: {send_std:.4f}, Min: {send_min:.4f}, Max: {send_max:.4f}")
-        print(f"Receive time - {receive_time}")
+        print(
+            f"Send times - Mean: \033[1m{send_mean:.4f}\033[0m, Std: \033[1m{send_std:.4f}\033[0m, Min: \033[1m{send_min:.4f}\033[0m, Max: \033[1m{send_max:.4f}\033[0m")
+        print(f"Receive time - \033[1m{receive_time}\033[0m")
 
 
 base_url = "http://127.0.01:8000"
