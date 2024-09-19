@@ -35,11 +35,6 @@ async def send_message(text: str):
     await MessageRepository.create_message(text)
 
 
-@app.post("/messages/clear")
-async def clear_messages():
-    await MessageRepository.clear_messages()
-
-
 @app.get("/messages", response_model=list[Message])
 async def get_messages(offset_message_id: int = -1):
     start_time = datetime.now()
