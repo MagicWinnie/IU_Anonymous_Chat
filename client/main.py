@@ -1,6 +1,7 @@
 import flet as ft
 
 from modules import texts
+from modules.api import API
 from modules.message_row import ChatMessage
 from modules.schemas import Message
 from modules.utils import is_valid_url
@@ -10,6 +11,8 @@ def main(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.STRETCH
     page.title = texts.PAGE_TITLE
 
+    api = API()
+
     def join_chat_click(e):
         if not ip_address_server.value:
             ip_address_server.error_text = texts.SERVER_ADDRESS_EMPTY
@@ -18,11 +21,16 @@ def main(page: ft.Page):
             ip_address_server.error_text = texts.SERVER_ADDRESS_INVALID
             ip_address_server.update()
         else:
+            api.set_base_url(ip_address_server.value)
+            if api.messages_count() is None:
+                ip_address_server.error_text = texts.SERVER_NOT_RESPONDING
+                ip_address_server.update()
+                return
             page.close(dig)
 
     def send_message_click(e):
         if new_message.value:
-            page.pubsub.send_all(Message(text=new_message.value))
+            api.message_send(new_message.value)
             new_message.value = ""
             new_message.focus()
             page.update()
@@ -43,7 +51,7 @@ def main(page: ft.Page):
         open=True,
         modal=True,
         title=ft.Text(texts.WELCOME_DIALOG_TITLE),
-        content=ft.Column([ip_address_server], width=300, height=40, tight=True),
+        content=ft.Column([ip_address_server], width=300, height=70, tight=True),
         actions=[ft.ElevatedButton(text=texts.WELCOME_DIALOG_JOIN_BUTTON, on_click=join_chat_click)],
         actions_alignment=ft.MainAxisAlignment.END,
     )
